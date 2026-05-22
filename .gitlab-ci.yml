@@ -1,6 +1,92 @@
+workflow:
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      when: never
+    - when: always
+
 stages:
   - test
   - lint
+  - build
+  - release
+  - deploy
+
 include:
-  - component: $CI_SERVER_FQDN/patrick.pfenning.92/ci-templates/pre-commit@0.5.0
-  - component: $CI_SERVER_FQDN/patrick.pfenning.92/ci-templates/security@0.5.0
+  - component: $CI_SERVER_FQDN/patrick.pfenning.92/ci-templates/pre-commit@0.6.0
+  - component: $CI_SERVER_FQDN/patrick.pfenning.92/ci-templates/security@0.6.0
+  - component: $CI_SERVER_FQDN/patrick.pfenning.92/ci-templates/container-build@0.6.0
+
+test:
+  stage: test
+  image: golang:1.23-alpine
+  script:
+    - go test ./...
+
+build:binary:
+  stage: build
+  image: golang:1.23-alpine
+  script:
+    - CGO_ENABLED=0 go build -ldflags="-s -w" -trimpath -o dist/chromagoth ./cmd/chromagoth
+  artifacts:
+    paths:
+      - dist/chromagoth
+    expire_in: 1 week
+  rules:
+    - if: $CI_COMMIT_TAG
+      when: never
+    - when: on_success
+
+.goreleaser:
+  stage: release
+  image:
+    name: goreleaser/goreleaser:v2.15.4
+    entrypoint: [""]
+  variables:
+    GITLAB_TOKEN: $CI_JOB_TOKEN
+    GIT_DEPTH: 0
+
+release:nightly:
+  extends: .goreleaser
+  script:
+    - goreleaser release --snapshot --clean
+  artifacts:
+    paths:
+      - dist/
+    expire_in: 7 days
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+
+release:dev:
+  extends: .goreleaser
+  script:
+    - goreleaser release --snapshot --clean
+  artifacts:
+    paths:
+      - dist/
+    expire_in: 7 days
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      when: never
+    - if: $RELEASE_DEV == "true"
+    - when: manual
+
+release:goreleaser:
+  extends: .goreleaser
+  script:
+    - goreleaser release --clean
+  rules:
+    - if: $CI_COMMIT_TAG
+
+pages:
+  stage: deploy
+  image: golang:1.23-alpine
+  script:
+    - go run ./cmd/chromagoth preview build
+  artifacts:
+    paths:
+      - public/
+  environment: development
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+    - if: $DEPLOY_PAGES == "true"
+    - when: manual

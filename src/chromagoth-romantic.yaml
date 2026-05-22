@@ -1,0 +1,27 @@
+name: Chromagoth Romantic
+variant: romantic
+mascot: velvet
+style: Velvet Confession
+vibe: "Crushes that last decades. Rose-tinted everything. Letters never sent."
+dark: false
+status: draft
+
+colors:
+  # Base scale (inverted — ground is lightest)
+  ground: "#FFF5F7"
+  veil: "#FFE8ED"
+  field: "#F5D5DC"
+  trace: "#E8C0CB"
+  ash: "#6A6C70"
+  mist: "#8C6870"
+  haze: "#5C4048"
+  graphite: "#3A2030"
+  # Accents
+  circuit-lime: "#88CC44"
+  powder-blush: "#FF8898"
+  static-mint: "#60D8B8"
+  laser-blue: "#6888E8"
+  cyber-pink: "#FF4488"
+  ultraviolet: "#9868D8"
+  amber-glow: "#FFB830"
+  cherry-flux: "#E83060"

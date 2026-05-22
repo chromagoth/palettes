@@ -1,0 +1,27 @@
+name: Chromagoth Military
+variant: military
+mascot: tank
+style: Field Directive
+vibe: "Discipline as fashion. Brass buttons, rank without institution. Orders nobody gave."
+dark: true
+status: final
+
+colors:
+  # Base scale
+  ground: "#0A0C0F"
+  veil: "#121920"
+  field: "#1C2830"
+  trace: "#2A3840"
+  ash: "#6A6C70"
+  mist: "#8C9AA4"
+  haze: "#B8C4CC"
+  graphite: "#EEF0F2"
+  # Accents
+  circuit-lime: "#7EA830"
+  powder-blush: "#C4B870"
+  static-mint: "#2E8898"
+  laser-blue: "#3060C8"
+  cyber-pink: "#7A1428"
+  ultraviolet: "#8C28CC"
+  amber-glow: "#C89020"
+  cherry-flux: "#CC1020"

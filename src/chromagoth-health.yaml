@@ -1,0 +1,27 @@
+name: Chromagoth Health
+variant: health
+mascot: synth
+style: Cryo
+vibe: "Cold chrome, clinical silence. A red cross that means something else entirely."
+dark: true
+status: final
+
+colors:
+  # Base scale — sterile clinical darkness, cool steel-teal cast
+  ground: "#060D0F"
+  veil: "#0D1A1E"
+  field: "#152024"
+  trace: "#1E2E34"
+  ash: "#6A6C70"
+  mist: "#8AAAB0"
+  haze: "#B8D4D8"
+  graphite: "#EEF6F8"
+  # Accents
+  circuit-lime: "#58E898"
+  powder-blush: "#FFB0C8"
+  static-mint: "#18C8BC"
+  laser-blue: "#2890E0"
+  cyber-pink: "#FF3868"
+  ultraviolet: "#7828C8"
+  amber-glow: "#C8E828"
+  cherry-flux: "#D00820"

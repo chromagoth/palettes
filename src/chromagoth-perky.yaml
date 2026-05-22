@@ -1,0 +1,27 @@
+name: Chromagoth Perky
+variant: perky
+mascot: bubble
+style: Neon Light
+vibe: "Caffeinated and cursed. Bright colors, bad decisions. Somehow still going."
+dark: false
+status: draft
+
+colors:
+  # Base scale (inverted — ground is lightest)
+  ground: "#FBFCFF"
+  veil: "#F1F5FF"
+  field: "#E2E8F5"
+  trace: "#C8D1E5"
+  ash: "#6A6C70"
+  mist: "#4F5B74"
+  haze: "#30394E"
+  graphite: "#171D2D"
+  # Accents
+  circuit-lime: "#88C60A"
+  powder-blush: "#EF7F77"
+  static-mint: "#00BFB5"
+  laser-blue: "#2F6BFF"
+  cyber-pink: "#E63B8F"
+  ultraviolet: "#6F48F8"
+  amber-glow: "#D88B00"
+  cherry-flux: "#D63B59"

@@ -1,0 +1,53 @@
+version: 2
+
+project_name: chromagoth
+
+builds:
+  - id: chromagoth
+    main: ./cmd/chromagoth
+    binary: chromagoth
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+      - darwin
+    goarch:
+      - amd64
+      - arm64
+    ldflags:
+      - -s -w
+    flags:
+      - -trimpath
+
+archives:
+  - id: chromagoth
+    name_template: "chromagoth_{{ .Os }}_{{ .Arch }}"
+    formats:
+      - tar.gz
+
+checksum:
+  name_template: checksums.txt
+
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - "^docs:"
+      - "^test:"
+      - "^chore:"
+
+snapshot:
+  version_template: "{{ incpatch .Version }}-{{ .ShortCommit }}-SNAPSHOT"
+
+release:
+  gitlab:
+    owner: patrick.pfenning.92
+    name: chromagoth/palettes
+  draft: false
+  prerelease: auto
+
+gitlab_urls:
+  api: https://gitlab.com/api/v4/
+  download: https://gitlab.com
+  skip_tls_verify: false
+  use_package_registry: true

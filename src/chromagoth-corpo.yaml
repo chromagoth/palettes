@@ -1,0 +1,27 @@
+name: Chromagoth Corpo
+variant: corpo
+mascot: exec
+style: Corporate Séance
+vibe: "The office after dark. Dead links, glass towers. Fluorescent hum at the end of a corridor that goes nowhere."
+dark: true
+status: draft
+
+colors:
+  # Base scale
+  ground: "#0C0F13"
+  veil: "#141922"
+  field: "#1E2630"
+  trace: "#2D3542"
+  ash: "#6A6C70"
+  mist: "#9AA4B0"
+  haze: "#C8D0DC"
+  graphite: "#F2F6FF"
+  # Accents
+  circuit-lime: "#A6E22E"
+  powder-blush: "#D9919A"
+  static-mint: "#6FE7D6"
+  laser-blue: "#4B7DFF"
+  cyber-pink: "#D85AA7"
+  ultraviolet: "#8F6EF6"
+  amber-glow: "#D6A14A"
+  cherry-flux: "#D94B63"

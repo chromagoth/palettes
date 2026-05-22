@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="cyber">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chromagoth — Preview</title>
+  <link rel="stylesheet" href="./chromagoth.css" />
+  <script src="./palettes.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root { --radius: 3px; }
+
+    html, body {
+      height: 100%;
+      background: var(--ground);
+      color: var(--graphite);
+      font-family: ui-monospace, 'Cascadia Code', 'Fira Code', monospace;
+      font-size: 14px;
+    }
+
+/* ── theme switcher (sidebar nav) ───────────────────────── */
+    .nav-label {
+      font-size: 9px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--ash);
+      padding: 0 .5rem;
+    }
+    .nav-label + .nav-label,
+    .nav-sep + .nav-label { margin-top: .5rem; }
+
+    .nav-sep {
+      height: 0;
+      border-top: 1px solid var(--trace);
+      margin: .75rem 0 0;
+    }
+
+    .switcher-item {
+      height: 32px;
+      background: transparent;
+      border-radius: var(--radius);
+      display: flex;
+      align-items: center;
+      gap: .6rem;
+      padding: 0 .6rem;
+      cursor: pointer;
+      border: none;
+      width: 100%;
+      text-align: left;
+      transition: background .1s;
+      color: var(--mist);
+      font-family: inherit;
+      font-size: 11px;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+    }
+    .switcher-item:hover        { background: var(--field); color: var(--graphite); }
+    .switcher-item.active       { background: var(--trace); color: var(--graphite); }
+    .switcher-item:focus-visible {
+      outline: 2px solid var(--ultraviolet);
+      outline-offset: -2px;
+    }
+
+    .switcher-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    /* ── layout ──────────────────────────────────────────────── */
+    .app  { display: flex; height: 100%; }
+    .body { display: flex; flex: 1; overflow: hidden; }
+
+    .sidebar {
+      width: 220px;
+      flex-shrink: 0;
+      background: var(--veil);
+      border-right: 1px solid var(--trace);
+      padding: 1.25rem 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: .75rem;
+      overflow-y: auto;
+    }
+
+    .main {
+      flex: 1;
+      padding: 2rem 2.5rem;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+
+    /* ── steckbrief ─────────────────────────────────────────── */
+    .steckbrief {
+      border: 1px solid var(--trace);
+      border-left: 3px solid var(--ultraviolet);
+      border-radius: 4px;
+      padding: .875rem 1.25rem;
+      background: var(--veil);
+      display: flex;
+      flex-direction: column;
+      gap: .3rem;
+    }
+
+    .sb-main {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .sb-name {
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--graphite);
+    }
+
+    .sb-mode {
+      font-size: 9px;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--ash);
+      border: 1px solid var(--trace);
+      border-radius: 100px;
+      padding: 2px 7px;
+      flex-shrink: 0;
+    }
+
+    .sb-style {
+      font-size: 11px;
+      letter-spacing: .05em;
+      font-style: italic;
+      color: var(--ultraviolet);
+    }
+
+    .sb-vibe {
+      font-size: 11px;
+      color: var(--mist);
+      line-height: 1.5;
+      margin-top: .2rem;
+    }
+
+    .sb-fields {
+      display: flex;
+      gap: 1.25rem;
+      margin-top: .2rem;
+    }
+
+    .sb-field {
+      display: flex;
+      gap: .4rem;
+      align-items: center;
+    }
+
+    .sb-label {
+      font-size: 9px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--ash);
+    }
+
+    .sb-value {
+      font-size: 11px;
+      color: var(--mist);
+    }
+
+    /* ── set card ────────────────────────────────────────────── */
+    .palette-preview {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .swatch-block {
+      flex: 1 1 200px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px 6px;
+    }
+
+    /* wide: keep base/accent blocks equal; narrow: each goes full-width */
+    @media (max-width: 500px) {
+      .swatch-block { grid-template-columns: repeat(8, 1fr); }
+    }
+
+    .set-swatch {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      cursor: default;
+      min-width: 0;
+    }
+
+    .set-color-block {
+      width: 100%;
+      aspect-ratio: 1;
+      border-radius: 4px;
+      box-shadow: 0 2px 8px rgba(0,0,0,.35), inset 0 0 0 1px rgba(255,255,255,.08);
+    }
+
+    .set-swatch-name {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+      text-align: center;
+      line-height: 1.2;
+      color: var(--graphite);
+    }
+
+    .set-hex {
+      font-size: 10px;
+      font-weight: 500;
+      text-align: center;
+      color: var(--mist);
+      cursor: pointer;
+      user-select: none;
+      transition: color .1s;
+      max-width: 100%;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .set-hex:hover  { color: var(--graphite); }
+    .set-hex.copied { color: var(--circuit-lime); }
+
+    /* ── format picker ───────────────────────────────────────── */
+    .palette-header {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: .5rem;
+    }
+
+    .format-select {
+      font-family: inherit;
+      font-size: 10px;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      background: var(--field);
+      color: var(--mist);
+      border: 1px solid var(--trace);
+      border-radius: var(--radius);
+      padding: 4px 10px;
+      cursor: pointer;
+      appearance: none;
+      -webkit-appearance: none;
+    }
+    .format-select:hover  { color: var(--graphite); }
+    .format-select:focus-visible { outline: 2px solid var(--ultraviolet); outline-offset: -1px; }
+
+    /* ── stat row ────────────────────────────────────────────── */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 1rem;
+    }
+
+    .stat {
+      background: var(--veil);
+      border: 1px solid var(--trace);
+      border-radius: 4px;
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: .6rem;
+    }
+
+  </style>
+</head>
+<body>
+<div class="app">
+  <div class="body">
+
+    <!-- ── sidebar / theme nav ───────────────────────────────── -->
+    <nav class="sidebar" id="switcher"></nav>
+
+    <!-- ── main content ───────────────────────────────────────── -->
+    <main class="main">
+
+      <!-- steckbrief -->
+      <div class="steckbrief">
+        <div class="sb-main">
+          <span class="sb-name" id="sb-name"></span>
+          <span class="sb-mode" id="sb-mode"></span>
+        </div>
+        <div class="sb-style" id="sb-style"></div>
+        <div class="sb-vibe" id="sb-vibe"></div>
+        <div class="sb-fields">
+          <div class="sb-field">
+            <span class="sb-label">mascot</span>
+            <span class="sb-value" id="sb-mascot"></span>
+          </div>
+          <div class="sb-field">
+            <span class="sb-label">status</span>
+            <span class="sb-value" id="sb-status"></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- palette swatches -->
+      <div>
+        <div class="palette-header">
+          <select id="format-select" class="format-select">
+            <option value="hex">HEX</option>
+            <option value="rgb">RGB</option>
+            <option value="hsl">HSL</option>
+          </select>
+        </div>
+        <section class="palette-preview">
+          <div class="swatch-block" id="swatches-base"></div>
+          <div class="swatch-block" id="swatches-accents"></div>
+        </section>
+      </div>
+
+
+    </main>
+  </div>
+</div>
+
+<script>
+function hexToRgb(hex) {
+  const r = parseInt(hex.slice(1,3), 16);
+  const g = parseInt(hex.slice(3,5), 16);
+  const b = parseInt(hex.slice(5,7), 16);
+  return `rgb(${r}, ${g}, ${b})`;
+}
+
+function hexToHsl(hex) {
+  let r = parseInt(hex.slice(1,3), 16) / 255;
+  let g = parseInt(hex.slice(3,5), 16) / 255;
+  let b = parseInt(hex.slice(5,7), 16) / 255;
+  const max = Math.max(r, g, b), min = Math.min(r, g, b);
+  let h = 0, s = 0, l = (max + min) / 2;
+  if (max !== min) {
+    const d = max - min;
+    s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+    switch (max) {
+      case r: h = ((g - b) / d + (g < b ? 6 : 0)) / 6; break;
+      case g: h = ((b - r) / d + 2) / 6; break;
+      case b: h = ((r - g) / d + 4) / 6; break;
+    }
+  }
+  return `hsl(${Math.round(h * 360)}, ${Math.round(s * 100)}%, ${Math.round(l * 100)}%)`;
+}
+
+let colorFormat = 'hex';
+
+const SLOTS = [
+  'ground','veil','field','trace',
+  'ash','mist','haze','graphite',
+  'circuit-lime','powder-blush','static-mint','laser-blue',
+  'cyber-pink','ultraviolet','amber-glow','cherry-flux',
+];
+
+// Loaded from generated public/palettes.js (window.CHROMAGOTH_PALETTES)
+const PALETTES = (window.CHROMAGOTH_PALETTES || []).map(p => ({
+  ...p,
+  accent: p.colors?.ultraviolet ?? '#6a6c70',
+}));
+
+const html = document.documentElement;
+const switcher = document.getElementById('switcher');
+const swatchesBase = document.getElementById('swatches-base');
+const swatchesAccents = document.getElementById('swatches-accents');
+
+const BASE_SLOTS    = SLOTS.slice(0, 8);
+const ACCENT_SLOTS  = SLOTS.slice(8);
+
+function makeSwatch(hex, slot) {
+  const sw = document.createElement('div');
+  sw.className = 'set-swatch';
+
+  const block = document.createElement('div');
+  block.className = 'set-color-block';
+  block.style.background = hex;
+
+  const name = document.createElement('span');
+  name.className = 'set-swatch-name';
+  name.textContent = slot;
+
+  const hexEl = document.createElement('span');
+  hexEl.className = 'set-hex';
+  hexEl.dataset.hex = hex.toLowerCase();
+  hexEl.dataset.rgb = hexToRgb(hex);
+  hexEl.dataset.hsl = hexToHsl(hex);
+  hexEl.textContent = hexEl.dataset[colorFormat];
+  hexEl.addEventListener('click', () => {
+    navigator.clipboard.writeText(hexEl.dataset[colorFormat]);
+    hexEl.classList.add('copied');
+    setTimeout(() => hexEl.classList.remove('copied'), 900);
+  });
+
+  sw.append(block, name, hexEl);
+  return sw;
+}
+
+function renderSwatches(palette) {
+  swatchesBase.innerHTML = '';
+  swatchesAccents.innerHTML = '';
+  BASE_SLOTS.forEach(slot => {
+    const hex = palette.colors[slot];
+    if (hex) swatchesBase.appendChild(makeSwatch(hex, slot));
+  });
+  ACCENT_SLOTS.forEach(slot => {
+    const hex = palette.colors[slot];
+    if (hex) swatchesAccents.appendChild(makeSwatch(hex, slot));
+  });
+}
+
+const PALETTE_MAP = Object.fromEntries(PALETTES.map(p => [p.variant, p]));
+
+const sbName   = document.getElementById('sb-name');
+const sbMode   = document.getElementById('sb-mode');
+const sbStyle  = document.getElementById('sb-style');
+const sbVibe   = document.getElementById('sb-vibe');
+const sbMascot = document.getElementById('sb-mascot');
+const sbStatus = document.getElementById('sb-status');
+
+function applyTheme(variant) {
+  html.dataset.theme = variant;
+  const palette = PALETTE_MAP[variant];
+  if (palette) {
+    renderSwatches(palette);
+    sbName.textContent   = palette.name;
+    sbMode.textContent   = palette.dark ? 'dark' : 'light';
+    sbStyle.textContent  = palette.style  ?? '';
+    sbVibe.textContent   = palette.vibe   ?? '';
+    sbMascot.textContent = palette.mascot ?? '';
+    sbStatus.textContent = palette.status ?? '';
+  }
+  switcher.querySelectorAll('.switcher-item').forEach(btn => {
+    const active = btn.dataset.variant === variant;
+    btn.classList.toggle('active', active);
+    btn.tabIndex = active ? 0 : -1;
+  });
+}
+
+const NAV_ORDER = ['soft','health','lolita','military','cyber','corpo','pastel','perky','retro','romantic','vampiric'];
+const sortedPalettes = [...PALETTES].sort((a, b) => {
+  const ai = NAV_ORDER.indexOf(a.variant);
+  const bi = NAV_ORDER.indexOf(b.variant);
+  return (ai === -1 ? 999 : ai) - (bi === -1 ? 999 : bi);
+});
+
+function makeNavItem(p) {
+  const btn = document.createElement('button');
+  btn.className = 'switcher-item' + (html.dataset.theme === p.variant ? ' active' : '');
+  btn.dataset.variant = p.variant;
+
+  const dot = document.createElement('span');
+  dot.className = 'switcher-dot';
+  dot.style.background = p.accent;
+
+  const label = document.createElement('span');
+  label.className = 'switcher-name';
+  label.textContent = p.name.replace('Chromagoth ', '');
+
+  btn.tabIndex = html.dataset.theme === p.variant ? 0 : -1;
+  btn.append(dot, label);
+  btn.addEventListener('click', () => applyTheme(p.variant));
+  btn.addEventListener('focus', () => applyTheme(p.variant));
+  return btn;
+}
+
+function makeNavLabel(text) {
+  const el = document.createElement('div');
+  el.className = 'nav-label';
+  el.textContent = text;
+  return el;
+}
+
+const darkPalettes  = sortedPalettes.filter(p => p.dark);
+const lightPalettes = sortedPalettes.filter(p => !p.dark);
+
+switcher.appendChild(makeNavLabel('Dark'));
+darkPalettes.forEach(p => switcher.appendChild(makeNavItem(p)));
+
+const sep = document.createElement('div');
+sep.className = 'nav-sep';
+switcher.appendChild(sep);
+
+switcher.appendChild(makeNavLabel('Light'));
+lightPalettes.forEach(p => switcher.appendChild(makeNavItem(p)));
+
+applyTheme(html.dataset.theme);
+
+document.getElementById('format-select').addEventListener('change', e => {
+  colorFormat = e.target.value;
+  document.querySelectorAll('.set-hex').forEach(el => {
+    el.textContent = el.dataset[colorFormat];
+  });
+});
+
+switcher.addEventListener('keydown', e => {
+  const items = [...switcher.querySelectorAll('.switcher-item')];
+  const idx = items.findIndex(el => el === document.activeElement);
+  if (idx === -1) return;
+  if (e.key === 'ArrowDown') { e.preventDefault(); items[(idx + 1) % items.length].focus(); }
+  if (e.key === 'ArrowUp')   { e.preventDefault(); items[(idx - 1 + items.length) % items.length].focus(); }
+});
+</script>
+</body>
+</html>
