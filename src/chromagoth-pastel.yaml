@@ -1,0 +1,27 @@
+name: Chromagoth Pastel
+variant: pastel
+mascot: pastel
+style: Soft Light
+vibe: "Sugar with static. Pretty enough to distract, weird enough to stay."
+dark: false
+status: draft
+
+colors:
+  # Base scale (inverted — ground is lightest)
+  ground: "#FFFBFD"
+  veil: "#F8F2F8"
+  field: "#EDE6EE"
+  trace: "#D9D1DC"
+  ash: "#6A6C70"
+  mist: "#655D70"
+  haze: "#453E52"
+  graphite: "#2C2534"
+  # Accents
+  circuit-lime: "#9DC452"
+  powder-blush: "#F5AAA5"
+  static-mint: "#73D9D0"
+  laser-blue: "#6F8FEA"
+  cyber-pink: "#D96CA9"
+  ultraviolet: "#917AE9"
+  amber-glow: "#D4A24C"
+  cherry-flux: "#D16D80"

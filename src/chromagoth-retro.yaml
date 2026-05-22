@@ -1,0 +1,27 @@
+name: Chromagoth Retro
+variant: retro
+mascot: retro
+style: Ghost Signal
+vibe: "Club flyers left in the rain. Vinyl rot, black lipstick. A handshake from someone who disappeared in 1994."
+dark: true
+status: draft
+
+colors:
+  # Base scale
+  ground: "#0D0D0F"
+  veil: "#151519"
+  field: "#202126"
+  trace: "#30323A"
+  ash: "#6A6C70"
+  mist: "#8D9096"
+  haze: "#B8BAC0"
+  graphite: "#ECEEF2"
+  # Accents — desaturated, almost grayscale
+  circuit-lime: "#A7B08A"
+  powder-blush: "#B09A9E"
+  static-mint: "#8FA9A3"
+  laser-blue: "#8D9CB8"
+  cyber-pink: "#AA8FA2"
+  ultraviolet: "#978FAF"
+  amber-glow: "#B0A078"
+  cherry-flux: "#B08A90"

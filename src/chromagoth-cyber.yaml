@@ -1,0 +1,27 @@
+name: Chromagoth Cyber
+variant: cyber
+mascot: cyber
+style: Neon Dark
+vibe: "3am basement. UV on black, cables behind the booth. Static on every frequency."
+dark: true
+status: draft
+
+colors:
+  # Base scale
+  ground: "#0D0D10"
+  veil: "#141418"
+  field: "#1D1D24"
+  trace: "#2B2C36"
+  ash: "#6A6C70"
+  mist: "#8B8F9A"
+  haze: "#BBBEC8"
+  graphite: "#ECEDF2"
+  # Accents
+  circuit-lime: "#BFFF00"
+  powder-blush: "#FF7070"
+  static-mint: "#00FFE8"
+  laser-blue: "#2979FF"
+  cyber-pink: "#FF00B0"
+  ultraviolet: "#9400FF"
+  amber-glow: "#FFB300"
+  cherry-flux: "#FF1744"

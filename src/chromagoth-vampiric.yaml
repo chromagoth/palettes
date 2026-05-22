@@ -1,0 +1,27 @@
+name: Chromagoth Vampiric
+variant: vampiric
+mascot: vamp
+style: Infrared
+vibe: "Blood temp at midnight. Ancient glamour, heat below the surface. Beautiful without explanation."
+dark: true
+status: draft
+
+colors:
+  # Base scale
+  ground: "#0A0508"
+  veil: "#130A10"
+  field: "#1E1018"
+  trace: "#2E1825"
+  ash: "#6A6C70"
+  mist: "#8A7880"
+  haze: "#C0A8B0"
+  graphite: "#F0E0E8"
+  # Accents
+  circuit-lime: "#B8FF30"
+  powder-blush: "#FFAAAA"
+  static-mint: "#60FFE0"
+  laser-blue: "#4050E0"
+  cyber-pink: "#FF0040"
+  ultraviolet: "#9000E0"
+  amber-glow: "#FFAA00"
+  cherry-flux: "#CC0020"

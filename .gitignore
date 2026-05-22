@@ -1,0 +1,4 @@
+node_modules/
+dist/
+public/chromagoth.css
+public/palettes.js

@@ -1,0 +1,27 @@
+name: Chromagoth Lolita
+variant: lolita
+mascot: doll
+style: Fragile Reign
+vibe: "Porcelain with a temper. Delicate on purpose. Every ruffle is a choice."
+dark: false
+status: draft
+
+colors:
+  # Base scale (inverted — ground is lightest)
+  ground: "#FFFCFF"
+  veil: "#F8F0F8"
+  field: "#EDE0EE"
+  trace: "#DDD0DE"
+  ash: "#6A6C70"
+  mist: "#8A7890"
+  haze: "#5A4860"
+  graphite: "#2A1830"
+  # Accents
+  circuit-lime: "#C8D880"
+  powder-blush: "#F8C8C8"
+  static-mint: "#C0E8DC"
+  laser-blue: "#B8CCE8"
+  cyber-pink: "#E8A0B8"
+  ultraviolet: "#C8A8D8"
+  amber-glow: "#E8D0A0"
+  cherry-flux: "#D87888"

@@ -1,0 +1,8 @@
+{
+  "name": "@chromagoth/palettes",
+  "private": true,
+  "scripts": {
+    "build": "chromagoth build",
+    "preview": "chromagoth preview serve"
+  }
+}

@@ -1,0 +1,27 @@
+name: Chromagoth Soft
+variant: soft
+mascot: haze
+style: Soft Dark
+vibe: "Smoke without fire. Smudged eyeliner, grey on grey. A playlist that quietly refuses to end."
+dark: true
+status: draft
+
+colors:
+  # Base scale
+  ground: "#131018"
+  veil: "#1E1B24"
+  field: "#29262E"
+  trace: "#383440"
+  ash: "#6A6C70"
+  mist: "#9C97A2"
+  haze: "#C6C0CC"
+  graphite: "#F0EEF4"
+  # Accents
+  circuit-lime: "#A8E048"
+  powder-blush: "#F090B0"
+  static-mint: "#60E8D0"
+  laser-blue: "#6898F0"
+  cyber-pink: "#F070C0"
+  ultraviolet: "#A878F0"
+  amber-glow: "#F0C850"
+  cherry-flux: "#F06880"
