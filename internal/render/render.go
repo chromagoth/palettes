@@ -10,7 +10,7 @@ import (
 	"strings"
 	"text/template"
 
-	"gitlab.com/patrick.pfenning.92/chromagoth/palettes/internal/palette"
+	"gitlab.com/chromagoth/palettes/internal/palette"
 )
 
 // ParseHex parses a #rrggbb hex string into r, g, b components.

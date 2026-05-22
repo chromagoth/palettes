@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	palettedata "gitlab.com/patrick.pfenning.92/chromagoth/palettes/src"
+	palettedata "gitlab.com/chromagoth/palettes/src"
 	"gopkg.in/yaml.v3"
 )
 

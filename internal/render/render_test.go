@@ -6,7 +6,7 @@ import (
 	"strings"
 	"testing"
 
-	"gitlab.com/patrick.pfenning.92/chromagoth/palettes/internal/palette"
+	"gitlab.com/chromagoth/palettes/internal/palette"
 )
 
 func TestParseHex(t *testing.T) {

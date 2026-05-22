@@ -41,13 +41,13 @@ snapshot:
 
 release:
   gitlab:
-    owner: patrick.pfenning.92
-    name: chromagoth/palettes
+    owner: chromagoth
+    name: palettes
   draft: false
   prerelease: auto
 
 gitlab_urls:
-  api: https://gitlab.com/api/v4/
+  api: https://gitlab.com/api/v4
   download: https://gitlab.com
   skip_tls_verify: false
   use_package_registry: true
