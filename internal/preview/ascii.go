@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"strings"
 
-	"gitlab.com/patrick.pfenning.92/chromagoth/palettes/internal/palette"
-	"gitlab.com/patrick.pfenning.92/chromagoth/palettes/internal/render"
+	"gitlab.com/chromagoth/palettes/internal/palette"
+	"gitlab.com/chromagoth/palettes/internal/render"
 )
 
 const (

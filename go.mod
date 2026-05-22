@@ -1,4 +1,4 @@
-module gitlab.com/patrick.pfenning.92/chromagoth/palettes
+module gitlab.com/chromagoth/palettes
 
 go 1.23.0
 

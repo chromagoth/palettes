@@ -8,10 +8,10 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 
-	"gitlab.com/patrick.pfenning.92/chromagoth/palettes/internal/config"
-	"gitlab.com/patrick.pfenning.92/chromagoth/palettes/internal/palette"
-	"gitlab.com/patrick.pfenning.92/chromagoth/palettes/internal/preview"
-	"gitlab.com/patrick.pfenning.92/chromagoth/palettes/internal/render"
+	"gitlab.com/chromagoth/palettes/internal/config"
+	"gitlab.com/chromagoth/palettes/internal/palette"
+	"gitlab.com/chromagoth/palettes/internal/preview"
+	"gitlab.com/chromagoth/palettes/internal/render"
 )
 
 var cfgFile string

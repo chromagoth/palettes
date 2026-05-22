@@ -14,7 +14,8 @@ stages:
 include:
   - component: $CI_SERVER_FQDN/patrick.pfenning.92/ci-templates/pre-commit@0.6.0
   - component: $CI_SERVER_FQDN/patrick.pfenning.92/ci-templates/security@0.6.0
-  - component: $CI_SERVER_FQDN/patrick.pfenning.92/ci-templates/container-build@0.6.0
+  - component: $CI_SERVER_FQDN/patrick.pfenning.92/ci-templates/container-build@0.8.0
+  - component: $CI_SERVER_FQDN/patrick.pfenning.92/ci-templates/container-tag@0.8.0
 
 test:
   stage: test
@@ -31,6 +32,13 @@ build:binary:
     paths:
       - dist/chromagoth
     expire_in: 1 week
+  rules:
+    - if: $CI_COMMIT_TAG
+      when: never
+    - when: on_success
+
+
+container:build:
   rules:
     - if: $CI_COMMIT_TAG
       when: never
@@ -64,10 +72,10 @@ release:dev:
     paths:
       - dist/
     expire_in: 7 days
+  allow_failure: true
   rules:
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+    - if: $CI_COMMIT_TAG
       when: never
-    - if: $RELEASE_DEV == "true"
     - when: manual
 
 release:goreleaser:
@@ -88,5 +96,6 @@ pages:
   environment: development
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
-    - if: $DEPLOY_PAGES == "true"
+    - if: $CI_COMMIT_TAG
     - when: manual
+      allow_failure: true

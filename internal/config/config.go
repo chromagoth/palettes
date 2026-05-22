@@ -5,7 +5,7 @@ import (
 	"os"
 
 	"github.com/BurntSushi/toml"
-	"gitlab.com/patrick.pfenning.92/chromagoth/palettes/internal/render"
+	"gitlab.com/chromagoth/palettes/internal/render"
 )
 
 const DefaultFile = "chromagoth.toml"
