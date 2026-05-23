@@ -8,6 +8,7 @@ stages:
   - test
   - lint
   - build
+  - publish
   - release
   - deploy
 
@@ -15,7 +16,37 @@ include:
   - component: $CI_SERVER_FQDN/patrick.pfenning.92/ci-templates/pre-commit@0.6.0
   - component: $CI_SERVER_FQDN/patrick.pfenning.92/ci-templates/security@0.6.0
   - component: $CI_SERVER_FQDN/patrick.pfenning.92/ci-templates/container-build@0.8.0
-  - component: $CI_SERVER_FQDN/patrick.pfenning.92/ci-templates/container-tag@0.8.0
+  - component: $CI_SERVER_FQDN/patrick.pfenning.92/ci-templates/container-tag@feat/container-tag-cross-registry
+  - component: $CI_SERVER_FQDN/patrick.pfenning.92/ci-templates/container-tag@feat/container-tag-cross-registry
+    inputs:
+      prefix: "ghcr:"
+      stage: publish
+      to_image: ghcr.io/chromagoth/palettes
+      dest_registry: ghcr.io
+      dest_username: chromagoth-operator
+      dest_password: $GH_TOKEN
+      needs_latest: [container:tag:latest]
+      needs_gittag: [container:tag:gittag]
+  - component: $CI_SERVER_FQDN/patrick.pfenning.92/ci-templates/container-tag@feat/container-tag-cross-registry
+    inputs:
+      prefix: "dockerhub:"
+      stage: publish
+      to_image: docker.io/chromagoth/palettes
+      dest_registry: docker.io
+      dest_username: $DOCKERHUB_USERNAME
+      dest_password: $DOCKERHUB_TOKEN
+      needs_latest: [container:tag:latest]
+      needs_gittag: [container:tag:gittag]
+  - component: $CI_SERVER_FQDN/patrick.pfenning.92/ci-templates/container-tag@feat/container-tag-cross-registry
+    inputs:
+      prefix: "quay:"
+      stage: publish
+      to_image: quay.io/chromagoth/palettes
+      dest_registry: quay.io
+      dest_username: $QUAY_USERNAME
+      dest_password: $QUAY_TOKEN
+      needs_latest: [container:tag:latest]
+      needs_gittag: [container:tag:gittag]
 
 test:
   stage: test
