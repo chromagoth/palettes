@@ -24,7 +24,7 @@ include:
       to_image: ghcr.io/chromagoth/palettes
       dest_registry: ghcr.io
       dest_username: chromagoth-operator
-      dest_password: $GH_TOKEN
+      dest_password: $GH_TOKEN_CLASSIC
       needs_latest: [container:tag:latest]
       needs_gittag: [container:tag:gittag]
   - component: $CI_SERVER_FQDN/patrick.pfenning.92/ci-templates/container-tag@feat/container-tag-cross-registry
