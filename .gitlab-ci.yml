@@ -3,7 +3,6 @@ workflow:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       when: never
     - when: always
-
 stages:
   - test
   - lint
@@ -11,10 +10,7 @@ stages:
   - publish
   - release
   - deploy
-
 include:
-  - component: $CI_SERVER_FQDN/patrick.pfenning.92/ci-templates/pre-commit@0.18.0
-  - component: $CI_SERVER_FQDN/patrick.pfenning.92/ci-templates/security@0.18.0
   - component: $CI_SERVER_FQDN/patrick.pfenning.92/ci-templates/container-build@0.18.0
   - component: $CI_SERVER_FQDN/patrick.pfenning.92/ci-templates/container-tag@0.19.0
   - component: $CI_SERVER_FQDN/patrick.pfenning.92/ci-templates/container-tag@0.19.0
@@ -25,8 +21,8 @@ include:
       dest_registry: ghcr.io
       dest_username: chromagoth-operator
       dest_password: $GH_TOKEN_CLASSIC
-      needs_latest: [container:tag:latest]
-      needs_gittag: [container:tag:gittag]
+      needs_latest: ['container:tag:latest']
+      needs_gittag: ['container:tag:gittag']
   - component: $CI_SERVER_FQDN/patrick.pfenning.92/ci-templates/container-tag@0.19.0
     inputs:
       prefix: "dockerhub:"
@@ -35,8 +31,8 @@ include:
       dest_registry: docker.io
       dest_username: $DOCKERHUB_USERNAME
       dest_password: $DOCKERHUB_TOKEN
-      needs_latest: [container:tag:latest]
-      needs_gittag: [container:tag:gittag]
+      needs_latest: ['container:tag:latest']
+      needs_gittag: ['container:tag:gittag']
   - component: $CI_SERVER_FQDN/patrick.pfenning.92/ci-templates/container-tag@0.19.0
     inputs:
       prefix: "quay:"
@@ -45,9 +41,11 @@ include:
       dest_registry: quay.io
       dest_username: $QUAY_USERNAME
       dest_password: $QUAY_TOKEN
-      needs_latest: [container:tag:latest]
-      needs_gittag: [container:tag:gittag]
-
+      needs_latest: ['container:tag:latest']
+      needs_gittag: ['container:tag:gittag']
+  - component: $CI_SERVER_FQDN/ptrck-sh/templates/ci-templates/pre-commit@0.19.0
+  - component: $CI_SERVER_FQDN/ptrck-sh/templates/ci-templates/security@0.19.0
+  - component: $CI_SERVER_FQDN/ptrck-sh/templates/ci-templates/alint-fix@0.19.0
 test:
   stage: test
   image: golang:1.23-alpine
@@ -57,7 +55,6 @@ test:
     - if: $CI_COMMIT_TAG
       when: never
     - when: on_success
-
 build:binary:
   stage: build
   image: golang:1.23-alpine
@@ -71,14 +68,11 @@ build:binary:
     - if: $CI_COMMIT_TAG
       when: never
     - when: on_success
-
-
 container:build:
   rules:
     - if: $CI_COMMIT_TAG
       when: never
     - when: on_success
-
 .goreleaser:
   stage: release
   image:
@@ -90,7 +84,6 @@ container:build:
   variables:
     GITLAB_TOKEN: $CI_JOB_TOKEN
     GIT_DEPTH: 0
-
 release:nightly:
   extends: .goreleaser
   script:
@@ -101,7 +94,6 @@ release:nightly:
     expire_in: 7 days
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
-
 release:dev:
   extends: .goreleaser
   script:
@@ -117,7 +109,6 @@ release:dev:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       when: never
     - when: manual
-
 release:goreleaser:
   extends: .goreleaser
   script:
@@ -128,7 +119,6 @@ release:goreleaser:
     expire_in: 7 days
   rules:
     - if: $CI_COMMIT_TAG
-
 release:github:
   stage: release
   image: alpine:3.21
@@ -140,15 +130,9 @@ release:github:
   before_script:
     - apk add --no-cache github-cli
   script:
-    - gh release create "$CI_COMMIT_TAG"
-        dist/chromagoth_*.tar.gz
-        dist/checksums.txt
-        --repo chromagoth/palettes
-        --title "$CI_COMMIT_TAG"
-        --generate-notes
+    - gh release create "$CI_COMMIT_TAG" dist/chromagoth_*.tar.gz dist/checksums.txt --repo chromagoth/palettes --title "$CI_COMMIT_TAG" --generate-notes
   rules:
     - if: $CI_COMMIT_TAG
-
 pages:
   stage: deploy
   image: golang:1.23-alpine
